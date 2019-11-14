@@ -1,0 +1,42 @@
+version: '2'
+services:
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      app_net:
+        ipv4_address: 192.168.0.12
+    links:
+      - elasticsearch
+      - influxdb
+  elasticsearch:
+    image: elasticsearch:latest
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      app_net:
+        ipv4_address: 192.168.0.11
+  influxdb:
+    image: tutum/influxdb:latest
+    environment:
+      PRE_CREATE_DB: "collectd"
+      ADMIN_USER: "dbadmin"
+      INFLUXDB_INIT_PWD: "dbpassword"
+      COLLECTD_DB: "collectd"
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+      - "25826:25826/udp"
+    networks:
+      app_net:
+        ipv4_address: 192.168.0.10
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 192.168.0.0/24
+        gateway: 192.168.0.1

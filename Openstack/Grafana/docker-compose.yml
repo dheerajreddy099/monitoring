@@ -1,0 +1,11 @@
+version: '2'
+services:
+  grafana:
+    image: grafana/grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "password"
+    ports:
+      - "3000:3000"
+    volumes:
+      - "${DOCKER_COMPOSE_MOUNT}./var/lib/grafana:/var/lib/grafana"
+      - "${DOCKER_COMPOSE_MOUNT}./var/log/grafana:/var/log/grafana"

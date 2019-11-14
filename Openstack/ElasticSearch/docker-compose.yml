@@ -1,0 +1,9 @@
+version: '2'
+services:
+  elasticsearch:
+      image: elasticsearch:latest
+      ports:
+        - "9200:9200"
+        - "9300:9300"
+      volumes:
+        - "${DOCKER_COMPOSE_MOUNT}./var/esdata:/usr/share/elasticsearch/data"
